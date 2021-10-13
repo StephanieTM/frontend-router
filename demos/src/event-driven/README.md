@@ -7,3 +7,7 @@
 3. 页面首次渲染时使用当前路由触发navigation事件
 4. 点击导航时使用pushState更新路由，并使用目标路由触发navigation事件
 5. 监听window的popstate事件，在浏览器前进/后退时使用当前路由触发navigation事件
+
+## 缺点
+
+1. 路由导航没有采用a标签，缺少了原生超链接对路由预览的支持
