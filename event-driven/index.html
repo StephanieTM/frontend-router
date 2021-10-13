@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <title>Hello World</title>
+    <link href="/images/favicon.png" type="image/x-icon" rel="shortcut icon">
+    <style>
+      .nav-container {
+      	margin: 20px 0;
+      }
+      .nav-link {
+        color: blue;
+        text-decoration: underline;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Hello World!</h1>
+
+    <nav class="nav-container">
+      <span class="nav-link" onclick="navigateTo('/')">首页</span>
+      <span class="nav-link" onclick="navigateTo('/detail')">详情页</span>
+    </nav>
+
+    <div id="content"></div>
+
+    <script type="text/javascript">
+      // 注册navigation事件
+      const navigationEvent = document.createEvent('Event');
+      navigationEvent.initEvent('navigation', false, true);
+
+      function handleNavigation(to) {
+        // 触发navigation事件，并传递路由
+        navigationEvent.data = { to };
+        window.dispatchEvent(navigationEvent);
+      }
+
+      window.addEventListener('navigation', function({ data }) {
+        // 监听navigation事件，根据路由渲染对应的内容
+        let content = '';
+        switch (data.to) {
+          case '/':
+            content = '这里是<span style="color: orange">首页</span>';
+            break;
+          case '/detail':
+            content = '这里是<span style="color: crimson">详情页</span>';
+            break;
+          default:
+        }
+        document.getElementById('content').innerHTML = content;
+      });
+
+      // 页面首次渲染时使用当前路由触发navigation事件
+      handleNavigation(window.location.pathname);
+
+      window.addEventListener('popstate', function () {
+        // 浏览器前进/后退时使用当前路由触发navigation事件
+        handleNavigation(window.location.pathname);
+      });
+
+      function navigateTo(link) {
+        // 点击导航时，使用pushState更新路由，并触发navigation事件
+        history.pushState({}, '', link);
+        handleNavigation(link);
+      }
+    </script>
+  </body>
+</html>
